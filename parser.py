@@ -29,15 +29,14 @@ class Twitter_methods(object):
                 "password": self.password,
                 "remember_me": "1",
                 "commit": "Log+in"}
-
         url = "https://mobile.twitter.com/session"
         r = self.session.post(url, data=data)
 
-    def get_user_tweets(self, user_id, number_of_tweets):
+    def get_user_tweets(self, user_name, number_of_tweets):
         """
         Return list of users tweets
         """
-        url = 'https://mobile.twitter.com/{}'.format(user_id)
+        url = 'https://mobile.twitter.com/{}'.format(user_name)
         tweets_list = list()
         while True:
             r = self.session.get(url)
@@ -50,17 +49,17 @@ class Twitter_methods(object):
             url = BeautifulSoup(str(url)).find('a').get('href')
         return tweets_list[:number_of_tweets]
 
-    def get_followers(self, user_id):
+    def get_followers(self, user_name):
         """
         Returns list of users followers
         """
-        url = 'https://mobile.twitter.com/{}/followers'.format(user_id)
+        url = 'https://mobile.twitter.com/{}/followers'.format(user_name)
         followers_list = list()
         while True:
             r = self.session.get(url)
             soup = BeautifulSoup(r.content)
             temp = soup.findAll("span", {"class": "username"})
-            followers_list.extend(list(filter(lambda x: x != user_id, [x.text[1:] for x in temp])))
+            followers_list.extend(list(filter(lambda x: x != user_name, [x.text[1:] for x in temp])))
             url = soup.find("div", {"class": "w-button-more"})
             if not url:
                 break
@@ -71,13 +70,13 @@ class Twitter_methods(object):
         """
         Return list of users who are followed by the user
         """
-        url = 'https://mobile.twitter.com/{}/following'.format(user_id)
+        url = 'https://mobile.twitter.com/{}/following'.format(user_name)
         following_list = []
         while True:
             r = self.session.get(url)
             soup = BeautifulSoup(r.content)
             temp = soup.findAll("span", {"class": "username"})
-            following_list.extend(filter(lambda x: x != user_id, map(lambda x: x.text[1:], temp)))
+            following_list.extend(filter(lambda x: x != user_name, map(lambda x: x.text[1:], temp)))
             url = soup.find("div", {"class": "w-button-more"})
             if not url:
                 break
