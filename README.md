@@ -4,6 +4,9 @@ These methods are for parsing Twitter, using no API:
 - getting followers
 - getting following
 
+Requirements:
+- BeautifulSoup
+
 Example of usage:
 ```python
 tw = Twitter_methods('email@example.com', 'password')
