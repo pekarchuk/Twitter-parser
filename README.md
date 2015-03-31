@@ -1,5 +1,5 @@
 # Twitter-parser
-These are methods for parsing Twitter, these methods are:
+These methods are for parsing Twitter, using no API:
 - getting user tweets
 - getting followers
 - getting following
