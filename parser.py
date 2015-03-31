@@ -29,7 +29,6 @@ class Twitter_methods(object):
                 "password": self.password,
                 "remember_me": "1",
                 "commit": "Log+in"}
-
         url = "https://mobile.twitter.com/session"
         r = self.session.post(url, data=data)
 
