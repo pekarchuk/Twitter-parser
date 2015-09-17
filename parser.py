@@ -42,7 +42,7 @@ class Twitter_methods(object):
             r = self.session.get(url)
             soup = BeautifulSoup(r.content)
             temp = soup.findAll("table", {"class": "tweet"})
-            tweets_list.extend([x.get('href').split('/')[-1][:-4] for x in temp])
+            tweets_list += [x.get('href').split('/')[-1][:-4] for x in temp]
             if len(tweets_list) >= number_of_tweets:
                 break
             url = soup.find("div", {"class": "w-button-more"})
@@ -58,8 +58,8 @@ class Twitter_methods(object):
         while True:
             r = self.session.get(url)
             soup = BeautifulSoup(r.content)
-            temp = soup.findAll("span", {"class": "username"})
-            followers_list.extend(list(filter(lambda x: x != user_name, [x.text[1:] for x in temp])))
+            temp = [x.text[1:] for x in soup.findAll("span", {"class": "username"})]
+            followers_list += [x for x in temp if x != user_name]
             url = soup.find("div", {"class": "w-button-more"})
             if not url:
                 break
@@ -71,12 +71,12 @@ class Twitter_methods(object):
         Return list of users who are followed by the user
         """
         url = 'https://mobile.twitter.com/{}/following'.format(user_name)
-        following_list = []
+        following_list = list()
         while True:
             r = self.session.get(url)
             soup = BeautifulSoup(r.content)
-            temp = soup.findAll("span", {"class": "username"})
-            following_list.extend(filter(lambda x: x != user_name, map(lambda x: x.text[1:], temp)))
+            temp = [x.text[1:] for x in soup.findAll("span", {"class": "username"})]
+            following_list += [x for x in temp if x != user_name]
             url = soup.find("div", {"class": "w-button-more"})
             if not url:
                 break
